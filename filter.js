@@ -19,11 +19,12 @@ function createPicture(y,x){
 
 
 
-function applyFilter(pictureData){
+function applyFilter(pictureData, toNewArray){
     if(typeof pictureData !== 'object' || !Array.isArray(pictureData)){
         console.log(`Given data is not an object and array.`);
         return false;
     }
+    let filteredPicture = Array.from({length: pictureData.length},i=>Array.from({length: pictureData[0].length},i=>[]));
 
     for(let i=0; i<pictureData.length; i++){
         for(let j=0; j<pictureData[i].length; j++){
@@ -41,14 +42,17 @@ function applyFilter(pictureData){
             //console.log(countedPixels);
             let avgValue = cumulativeValue / countedPixels;
             //console.log(avgValue);
-            pictureData[i][j].push(Math.floor(avgValue));
+            if(toNewArray){
+                filteredPicture[i][j].push(Math.floor(avgValue));
+            }else{
+                pictureData[i][j].push(Math.floor(avgValue));
+            }
         }
     }
-    return pictureData;
+    return toNewArray ? filteredPicture: pictureData;
 }
 
 
-let pD = createPicture(8,8)
-console.log(pD)
-console.log(applyFilter(pD))
+let pD = createPicture(8,8);
+console.log(applyFilter(pD,false))
 //applyFilter(pD);
